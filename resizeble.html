@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="resizeble.css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="resizeble.js"></script>
+</head>
+<body >
+<div id='divGeral'>
+	<input type="text" id="pagina" placeholder="numero pagina">
+	<button onclick="app.loadPage()">load page!</button><br>
+	<br>
+	<label for="_widget">Widget</label>
+  	<input type="radio" name="_control" id="forWidget" value="widget"><br>
+  	<label for="_sumario">Sumario</label>
+  	<input type="radio" name="_control" id="forSumario" value="sumario"><br>
+
+	<div id="widgetInfo">
+		<h3 align="center">WIDGET</h3>
+		<input type="text" id="paginaWidget" placeholder="numero pagina">
+		<input type="text" id="numberWidget" placeholder="numero widget"><br>
+		<input type="text" id="titleWidget" placeholder="titulo widget">
+	</div>
+	<br><br><br>
+
+	<div id="sumarioInfo">
+		<h3 align="center">SUMARIO</h3>
+		<input type="text" id="paginaSumario" placeholder="pagina corrente">
+		<input type="text" id="paginaTarget" placeholder="pagina target"><br>
+	</div>
+
+	<div id="divWidgetIcon" draggable="true" ondragstart="return app.dragStart(event)" onkeypress="app.pressKeyCode(this.id)" tabindex="0"></div>
+	<canvas id="divCanvasPage" width="740" height="1004"></canvas>
+	<div id="divAreaCanvas" ondragenter="return app.dragEnter(event)" ondrop="return app.dragDrop(event)" ondragover="return app.dragOver(event)" onclick="app.getPositionWidgetIcon()"></div>
+</div>
+</body>
+</html>
