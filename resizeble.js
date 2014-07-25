@@ -29,9 +29,8 @@ App.prototype = {
 	},
 		
 	createWidgetIcon: function(x, y){
-		var objectType = document.getElementsByName("_control");
-		var _w = $("#forSumario").val();
-		var _s = $("#forWidget").val();
+		var objectType = app.verifyTypeObject();
+		var custom = app.getDimensionObject(objectType);
 
 		iconId = app.getIconId();
 		var newDiv = document.createElement("div");
@@ -41,8 +40,15 @@ App.prototype = {
 		newDiv.setAttribute("ondragover","return app.dragOver(event)");
 		newDiv.setAttribute("onkeypress","app.pressKeyCode(this.id)");
 		newDiv.style.padding = 5 + "px";
-		newDiv.style.width = 10 + "px";
-		newDiv.style.height = 5 + "px";
+
+		if (custom === null){
+			newDiv.style.width = 15 + "px";
+			newDiv.style.height = 10 + "px";	
+		} else {
+			newDiv.style.width = custom.object[0].width;
+			newDiv.style.height = custom.object[0].height;
+		}
+
 		newDiv.style.resize = "both";
 		newDiv.style.overflow = "auto";
 		newDiv.style.zIndex = 12;
@@ -56,12 +62,15 @@ App.prototype = {
 	},
 	pressKeyCode: function(id){
 		var div = "#" + id;
-		if(event.keyCode === 100){//pressionar D remove o elemento
+		if(event.keyCode === 100 || event.keyCode === 68){//pressionar d remove o elemento
 			document.getElementById(id).remove();
 			$('#widgetProperties').css('display', 'none');		
 		} else if(event.keyCode === 13){//pressionar enter salva posicao e tamanho			
 			document.getElementById(id).style.opacity = 0.2;
 			var _o = app.verifyTypeObject();
+
+			var divTemp = document.getElementById(id);
+			app.saveDimensionObject(divTemp, _o);
 
 			app.showDetails(id, _o);
 		}
@@ -139,7 +148,32 @@ App.prototype = {
 		}
 
 		return type;
-	}
+	},
+
+	saveDimensionObject: function(div, type){
+		var dimension = { "object":[{"width":div.style.width, "height":div.style.height}]};
+
+		window.localStorage.setItem(type, JSON.stringify(dimension));
+	},
+
+	getDimensionObject: function(type){
+		var dimension = window.localStorage.getItem(type);
+		return JSON.parse(dimension);
+	},
+
+	clearStorage: function(){
+		window.localStorage.clear();
+	},
+
+	//teste futuro
+	/*choosePage: function(){
+		function selectPage(ev){
+			//document.getElementById("pagina").value = ev.currentTarget.value;
+
+		}
+
+		document.getElementById("choose").addEventListener("change", selectPage, false);
+	}*/
 }	
 
 
